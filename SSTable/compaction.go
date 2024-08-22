@@ -4,7 +4,7 @@ import (
 	"log"
 	"mylsmdb/config"
 	"mylsmdb/kv"
-	"mylsmdb/trees/redblacktree"
+	"mylsmdb/skiplist"
 	"os"
 	"time"
 )
@@ -34,7 +34,7 @@ func (tree *TableTree) major_compaction_level(level int) {
 
 	table_cache := make([]byte, levelMaxSize[level])
 
-	MemTree := redblacktree.New[string, []byte]()
+	MemTree := skiplist.NewSkipList[string, []byte]()
 	tree.lock.Lock()
 
 	for i := tree.levels[level]; i != nil; i = i.next {

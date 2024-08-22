@@ -3,7 +3,7 @@ package lsm
 import (
 	"log"
 	"mylsmdb/config"
-	"mylsmdb/trees/redblacktree"
+	"mylsmdb/skiplist"
 	"time"
 )
 
@@ -27,7 +27,7 @@ func checkMemory() {
 	}
 	log.Println("Compressing memory")
 	tmpTree := database.MemTree
-	database.MemTree = redblacktree.New[string, []byte]()
+	database.MemTree = skiplist.NewSkipList[string, []byte]()
 	database.TableTree.CreateNewTable(tmpTree.ToValue())
 	database.Wal.Reset()
 }

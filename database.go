@@ -2,12 +2,12 @@ package lsm
 
 import (
 	sstable "mylsmdb/SSTable"
-	"mylsmdb/trees/redblacktree"
+	"mylsmdb/skiplist"
 	"mylsmdb/wal"
 )
 
 type DataBase struct {
-	MemTree   *redblacktree.Tree[string, []byte]
+	MemTree   *skiplist.SkipList[string, []byte]
 	TableTree *sstable.TableTree
 	Wal       *wal.Wal
 }

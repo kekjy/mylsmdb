@@ -4,7 +4,7 @@ import (
 	"log"
 	sstable "mylsmdb/SSTable"
 	"mylsmdb/config"
-	"mylsmdb/trees/redblacktree"
+	"mylsmdb/skiplist"
 	"mylsmdb/wal"
 	"os"
 )
@@ -25,7 +25,7 @@ func Start(conf config.Config) {
 
 func init_database(dir string) {
 	database = &DataBase{
-		MemTree:   &redblacktree.Tree[string, []byte]{},
+		MemTree:   &skiplist.SkipList[string, []byte]{},
 		Wal:       &wal.Wal{},
 		TableTree: &sstable.TableTree{},
 	}

@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"log"
 	"mylsmdb/kv"
-	"mylsmdb/trees/redblacktree"
+	"mylsmdb/skiplist"
 	"os"
 	"path"
 	"sync"
@@ -19,7 +19,7 @@ type Wal struct {
 	lock sync.Locker
 }
 
-func (w *Wal) Init(dir string) *redblacktree.Tree[string, []byte] {
+func (w *Wal) Init(dir string) *skiplist.SkipList[string, []byte] {
 	log.Println("Loading wal.log...")
 	start := time.Now()
 	defer func() {
@@ -39,13 +39,13 @@ func (w *Wal) Init(dir string) *redblacktree.Tree[string, []byte] {
 	return w.load_to_memory()
 }
 
-func (w *Wal) load_to_memory() *redblacktree.Tree[string, []byte] {
+func (w *Wal) load_to_memory() *skiplist.SkipList[string, []byte] {
 	w.lock.Lock()
 	defer w.lock.Unlock()
 
 	info, _ := os.Stat(w.path)
 	size := info.Size()
-	tree := redblacktree.New[string, []byte]()
+	tree := skiplist.NewSkipList[string, []byte]()
 	if size == 0 {
 		return tree
 	}
