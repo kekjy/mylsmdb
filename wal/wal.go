@@ -98,11 +98,12 @@ func (w *Wal) Write(value kv.Value) {
 	w.lock.Lock()
 	defer w.lock.Unlock()
 
-	if value.Del {
+	//debug
+	/*if value.Del {
 		log.Println("wal.log:	delete ", value.Key)
 	} else {
 		log.Println("wal.log:	insert ", value.Key)
-	}
+	}*/
 
 	data, _ := json.Marshal(value)
 	err := binary.Write(w.f, binary.LittleEndian, int64(len(data)))

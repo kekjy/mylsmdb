@@ -7,7 +7,8 @@ import (
 )
 
 func Get[T any](key string) (T, bool) {
-	log.Print("Get ", key)
+	//debug
+	//log.Print("Get ", key)
 	value, found := database.MemTree.Get(key)
 	if found {
 		return getInstance[T](value)
@@ -25,7 +26,8 @@ func Get[T any](key string) (T, bool) {
 }
 
 func Set[T any](key string, value T) bool {
-	log.Print("Insert ", key, ",")
+	//debug
+	//log.Print("Insert ", key, ",")
 	val, err := kv.Encode(value)
 	if err != nil {
 		log.Println(err)
@@ -42,7 +44,8 @@ func Set[T any](key string, value T) bool {
 }
 
 func DeleteAndGet[T any](key string) (T, bool) {
-	log.Print("Delete ", key)
+	//debug
+	//log.Print("Delete ", key)
 	value, found := database.MemTree.Remove(key)
 	if found {
 		// 写入 wal.log
@@ -58,7 +61,8 @@ func DeleteAndGet[T any](key string) (T, bool) {
 }
 
 func Delete[T any](key string) {
-	log.Print("Delete ", key)
+	//debug
+	//log.Print("Delete ", key)
 	_, found := database.MemTree.Remove(key)
 	if found {
 		database.Wal.Write(kv.Value{
