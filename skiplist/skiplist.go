@@ -65,6 +65,8 @@ func (sl *SkipList[K, V]) randomLevel() int {
 }
 
 func (sl *SkipList[K, V]) Find(key K) *node[K, V] {
+	sl.RLock()
+	defer sl.RUnlock()
 	x := sl.head
 	for i := sl.level; i >= 0; i-- {
 		for x.forward[i] != sl.tail && x.forward[i].key < key {
@@ -87,6 +89,8 @@ func (sl *SkipList[K, V]) Get(key K) (V, bool) {
 }
 
 func (sl *SkipList[K, V]) Put(key K, value V) {
+	sl.Lock()
+	defer sl.Unlock()
 	update := make([]*node[K, V], MaxLevel+1)
 	x := sl.head
 	for i := sl.level; i >= 0; i-- {
@@ -115,6 +119,8 @@ func (sl *SkipList[K, V]) Put(key K, value V) {
 }
 
 func (sl *SkipList[K, V]) Remove(key K) (V, bool) {
+	sl.Lock()
+	defer sl.Unlock()
 	update := make([]*node[K, V], MaxLevel+1)
 	x := sl.head
 	for i := sl.level; i >= 0; i-- {
